@@ -31,4 +31,8 @@ public class ProductRepository {
         this.products.add(product);
         return product;
     }
+
+    public boolean deleteBySku(Long sku) {
+        return this.products.removeIf(p -> sku.equals(p.getSku()));
+    }
 }

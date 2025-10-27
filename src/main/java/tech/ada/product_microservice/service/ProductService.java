@@ -38,4 +38,23 @@ public class ProductService {
         this.allProducts().set(indexProduct, productBySku);
         return productBySku;
     }
+
+    public Product update(Long sku, Product product) {
+        Product Updating = this.getProductBySku(sku);
+        // Não permitir alteração do sku
+        if (Objects.nonNull(product.getSku()) && !product.getSku().equals(Updating.getSku())) {
+            throw new RuntimeException("Nao eh permitido alterar o sku");
+        }
+        // Substitui os campos (exceto sku)
+        Updating.setDescription(product.getDescription());
+        Updating.setPrice(product.getPrice());
+        int idx = this.allProducts().indexOf(Updating);
+        this.allProducts().set(idx, Updating);
+        return Updating;
+    }
+
+    public void delete(Long sku) {
+        Product deleting = this.getProductBySku(sku);
+        this.allProducts().remove(deleting);
+    }
 }
