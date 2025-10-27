@@ -28,15 +28,30 @@ public class ProductService {
 
     public Product partialUpdate(Long sku, Product product) {
         Product productBySku = this.getProductBySku(sku);
-        int indexProduct = this.allProducts().indexOf(productBySku);
-        if(Objects.nonNull(product.getSku())
-                && !product.getSku().equals(productBySku.getSku())){
-            throw new RuntimeException("Nao eh permitido alterar o sku");
+
+        product.setId(productBySku.getId());
+        product.setSku(productBySku.getSku());
+        return this.productRepository.save(product);
+    }
+
+    public Product updateProduct(Long sku, Product product) {
+        Product productBySku = this.getProductBySku(sku);
+        if (productBySku == null) {
+            throw new RuntimeException("Produto nao encontrado com SKU: " + sku);
         }
-        productBySku.setDescription(product.getDescription());
-        productBySku.setPrice(product.getPrice());
-        this.allProducts().set(indexProduct, productBySku);
-        return productBySku;
+
+        product.setId(productBySku.getId());
+        product.setSku(productBySku.getSku());
+        return this.productRepository.save(product);
+    }
+
+    public void deleteProduct(Long sku) {
+        Product productBySku = this.getProductBySku(sku);
+        if (productBySku == null) {
+            throw new RuntimeException("Produto nao encontrado com SKU: " + sku);
+        }
+
+        this.productRepository.delete(productBySku);
     }
 
     public Product update(Long sku, Product product) {
