@@ -34,10 +34,11 @@ public class ProductController {
     }
 
     //PUT - UPDATE ALL
-    @PutMapping("/{sku}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long sku,
-                                                 @RequestBody Product product) {
-        return ResponseEntity.ok(this.productService.updateProduct(sku, product));
+    @PostMapping("/{sku}")
+    public ResponseEntity<Product> update(@PathVariable Long sku,
+                                          @RequestBody Product product) {
+        Product updated = this.productService.update(sku, product);
+        return ResponseEntity.ok(updated);
     }
 
     //PATCH - PARTIAL UPDATE
@@ -49,8 +50,8 @@ public class ProductController {
 
     //DELETE - REMOVE
     @DeleteMapping("/{sku}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long sku) {
-        this.productService.deleteProduct(sku);
+    public ResponseEntity<Void> delete(@PathVariable Long sku) {
+        this.productService.delete(sku);
         return ResponseEntity.noContent().build();
     }
 
